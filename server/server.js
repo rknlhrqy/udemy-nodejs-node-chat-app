@@ -3,7 +3,7 @@ const fs = require('fs');
 const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
-const {generateMessage} = require('./utils/message');
+const {generateMessage, generateLocationMessage} = require('./utils/message');
 
 const publicPath = path.join(__dirname, '../public');
 
@@ -28,18 +28,18 @@ io.on('connection', (socket) => {
   socket.on('createMessage', (message, callback) => {
     console.log('create message', message);
 
-    /*
-    io.emit('newMessage', {
-      from: message.from,
-      text: message.text,
-      createdAt: new Date().getTime()
-    })
-    */
-    socket.broadcast.emit('newMessage', generateMessage(message.from, message.text));
+    io.emit('newMessage', generateMessage(message.from, message.text));
+    //socket.broadcast.emit('newMessage', generateMessage(message.from, message.text));
     callback({
       ack: true,
       response: 'You message is received by server'
     });
+  });
+
+  socket.on('createLocationMessage', (message) => {
+    io.emit('newLocationMessage',
+      generateLocationMessage('Admin',
+        message.latitude, message.longitude));
   });
 
 });
