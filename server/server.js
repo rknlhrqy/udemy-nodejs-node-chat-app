@@ -18,6 +18,17 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('Client disconnected to server');
   });
+
+  socket.emit('newEmailEvent', {
+    from: 'mike@example.com',
+    text: 'How is it going',
+    createAt: 123
+  });
+
+  socket.on('emailFromClient', (email) => {
+    console.log('Email received from client', email);
+  });
+
 });
 
 server.listen(port, () => {
