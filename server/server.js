@@ -25,7 +25,7 @@ io.on('connection', (socket) => {
   socket.emit('newMessage', generateMessage('Admin', 'Welcome!'));
   socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user just joined'));
  
-  socket.on('createMessage', (message) => {
+  socket.on('createMessage', (message, callback) => {
     console.log('create message', message);
 
     /*
@@ -36,6 +36,10 @@ io.on('connection', (socket) => {
     })
     */
     socket.broadcast.emit('newMessage', generateMessage(message.from, message.text));
+    callback({
+      ack: true,
+      response: 'You message is received by server'
+    });
   });
 
 });
