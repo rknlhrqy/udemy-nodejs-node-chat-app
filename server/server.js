@@ -19,14 +19,13 @@ io.on('connection', (socket) => {
     console.log('Client disconnected to server');
   });
 
-  socket.emit('newEmailEvent', {
-    from: 'mike@example.com',
-    text: 'How is it going',
-    createAt: 123
-  });
-
-  socket.on('emailFromClient', (email) => {
-    console.log('Email received from client', email);
+  socket.on('createMessage', (message) => {
+    console.log('create message', message);
+    io.emit('newMessage', {
+      from: message.from,
+      text: message.text,
+      createdAt: new Date().getTime()
+    })
   });
 
 });
