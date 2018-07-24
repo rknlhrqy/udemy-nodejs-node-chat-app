@@ -2,19 +2,22 @@
 <html>
   <head>
     <meta charset='utf-8'>
+    <link rel="stylesheet" href="/css/Grid.css">
     <link rel="stylesheet" href="/css/styles.css">
   </head>
 
-  <body class="chat">
-    <div class="chat__sidebar">
+  <body class="chat row">
+    <div class="chat__sidebar col span-2-of-5">
       <h3>People</h3>
       <div id="users"></div>
     </div>
 
-    <div class="chat__main">
-      <ol id="messages" class="chat_messages"></ol>
-
-      <div class="chat__footer">
+    <div class="chat__main col span-3-of-5">
+      <!--
+      <ol id="messages" class="chat__messages row" style="overflow-y:scroll"></ol>
+      -->
+      <ol id="messages" class="chat__messages row"></ol>
+      <div class="chat__footer row">
         <form id="message-form">
           <input name="message" type="text" placeholder="Message" autofocus autocomplete="off"/>
           <button>Send</button>
@@ -24,25 +27,29 @@
     </div>
 
     <script id="message-template", type="text/template">
-      <div class="message__title">
-        <h4>{{from}}</h4>
-        <span>{{createdAt}}</span>
-      </div>
-      <div class="message__body">
-        <p>{{text}}</p>
-      </div>
+      <li>
+        <div class="message__title">
+          <h4>{{from}}</h4>
+          <span>{{createdAt}}</span>
+        </div>
+        <div class="message__body">
+          <p>{{text}}</p>
+        </div>
+      </li>
     </script>
 
     <script id="location-message-template", type="text/template">
-      <div class="message__title">
-        <h4>{{from}}</h4>
-        <span>{{createdAt}}</span>
-      </div>
-      <div class="message__body">
-        <p>
-          <a href="{{url}}" target="_blank">My current location</p>
-        </p>
-      </div>
+      <li>
+        <div class="message__title">
+          <h4>{{from}}</h4>
+          <span>{{createdAt}}</span>
+        </div>
+        <div class="message__body">
+          <p>
+            <a href="{{url}}" target="_blank">My current location</a>
+          </p>
+        </div>
+      </li>
     </script>
 
     <script src = "/js/libs/mustache.js"></script>

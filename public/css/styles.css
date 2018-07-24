@@ -85,7 +85,7 @@ button:disabled {
 
 .chat__sidebar {
   overflow-y: scroll;
-  width: 260px;
+  /*width: 260px;*/
   height: 100vh;
   background: -moz-linear-gradient(125deg, rgba(39,107,130,1) 0%, rgba(49,84,129,1) 100%); /* ff3.6+ */
   background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, rgba(49,84,129,1)), color-stop(100%, rgba(39,107,130,1))); /* safari4+,chrome */
@@ -118,15 +118,18 @@ button:disabled {
   flex-direction: column;
   height: 100vh;
   width: 100%;
+  position: relative;
 }
 
 .chat__messages {
+  list-style: none;
   flex-grow: 1;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
 }
 
 .chat__footer {
+  width: 100%;
   background: #e6eaee;
   display: flex;
   padding: 10px;
@@ -161,6 +164,7 @@ button:disabled {
 .message__title {
   display: flex;
   margin-bottom: 5px;
+  margin-top: 17px;
 }
 
 .message__title h4 {
