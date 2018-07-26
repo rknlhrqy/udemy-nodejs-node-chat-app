@@ -50,10 +50,10 @@ io.on('connection', (socket) => {
   });
 
   socket.on('createMessage', (message, callback) => {
-    console.log('create message', message);
-
-    io.emit('newMessage', generateMessage(message.from, message.text));
-    //socket.broadcast.emit('newMessage', generateMessage(message.from, message.text));
+    const user = users.getUser(socket.id);
+    if (user && isRealString(message.text)) {
+      io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
+    }
     callback({
       ack: true,
       response: 'You message is received by server'
@@ -61,9 +61,12 @@ io.on('connection', (socket) => {
   });
 
   socket.on('createLocationMessage', (message) => {
-    io.emit('newLocationMessage',
-      generateLocationMessage('Admin',
-        message.latitude, message.longitude));
+    const user = users.getUser(socket.id);
+    if (user && message.latitude !== null && message.longitude !== null) {
+      io.to(user.room).emit('newLocationMessage',
+        generateLocationMessage(user.name,
+          message.latitude, message.longitude));
+    }
   });
 });
 
