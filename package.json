@@ -6,8 +6,11 @@
   "scripts": {
     "start": "node server/server.js",
     "dev": "nodemon server/server.js",
+    "dev-debug": "nodemon --inspect-brk server/server.js",
     "test": "mocha server/**/*.test.js",
-    "test-watch": "nodemon --exec 'npm test'"
+    "test-debug": "mocha --inspect-brk server/**/*.test.js",
+    "test-watch": "nodemon --exec 'npm test'",
+    "test-watch-debug": "nodemon --exec 'npm run test-debug'"
   },
   "engines": {
     "node": "10.6.0"

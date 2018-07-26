@@ -1,11 +1,30 @@
 const socket = io();
 
+
 socket.on('connect', () => {
-  console.log('Connected to server');
+  const params = jQuery.deparam(window.location.search);
+  socket.emit('join', params, (error) => {
+    if (error) {
+      alert(error);
+      //Go back to login page
+      //window.location.href = '/';
+      window.location.assign('/');
+    } else {
+      console.log('Go to chat page');
+    }
+  });
 });
 
 socket.on('disconnect', () => {
   console.log('Disconnected from server');
+});
+
+socket.on('updateUserList', (users) => {
+  const ol = jQuery('<ol></ol>');
+  users.forEach((user) => {
+    ol.append(jQuery('<li></li>').text(user));
+  });
+  jQuery('#users').html(ol);
 });
 
 const scrollToBottom = () => {
