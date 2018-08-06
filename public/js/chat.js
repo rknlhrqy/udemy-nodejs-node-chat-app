@@ -1,3 +1,4 @@
+/* global io moment Mustache */
 const socket = io();
 
 
@@ -6,8 +7,10 @@ socket.on('connect', () => {
   socket.emit('join', params, (error) => {
     if (error) {
       alert(error);
-      //Go back to login page
-      //window.location.href = '/';
+      /*
+      Go back to login page
+      window.location.href = '/';
+      */
       window.location.assign('/');
     } else {
       console.log('Go to chat page');
@@ -55,7 +58,7 @@ socket.on('newMessage', (message) => {
   const html = Mustache.render(template, {
     text: message.text,
     from: message.from,
-    createdAt: formattedTime
+    createdAt: formattedTime,
   });
   jQuery('#messages').append(html);
   scrollToBottom();
@@ -77,7 +80,7 @@ socket.on('newLocationMessage', (message) => {
   const html = Mustache.render(template, {
     from: message.from,
     createdAt: formattedTime,
-    url: message.url  
+    url: message.url, 
   });
   jQuery('#messages').append(html);
   scrollToBottom();
@@ -88,7 +91,7 @@ jQuery('#message-form').on('submit', (event) => {
 
   const messageTextBox = jQuery('[name=message');
   socket.emit('createMessage', {
-    text: messageTextBox.val()
+    text: messageTextBox.val(),
   }, () => {
     messageTextBox.val('');
   });
@@ -97,7 +100,7 @@ jQuery('#message-form').on('submit', (event) => {
 const locationButton = jQuery('#send-location');
 locationButton.on('click', () => {
   if (!navigator.geolocation) {
-    return alert('Geolocation not supported by the browser');
+    alert('Geolocation not supported by the browser');
   }
 
   locationButton.attr('disabled', 'disabled').text('Sending location ...');
@@ -106,10 +109,10 @@ locationButton.on('click', () => {
     socket.emit('createLocationMessage', {
       latitude: Position.coords.latitude,
       longitude: Position.coords.longitude,
-      timestamp: Position.timestamp
+      timestamp: Position.timestamp,
     });
   }, (error) => {
     locationButton.removeAttr('disabled').text('Send location');
-    alert('Unable to fetch location');
+    alert('Unable to fetch location:'.concat(error));
   });
 })

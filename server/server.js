@@ -22,6 +22,8 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
   console.log('New user connected');
 
+  socket.emit('updateRoomList', rooms.getRoomList());
+
   socket.on('disconnect', () => {
     console.log('Client disconnected to server');
     const user = users.removeUser(socket.id);

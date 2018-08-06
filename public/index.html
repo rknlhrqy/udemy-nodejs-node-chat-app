@@ -18,12 +18,22 @@
         </div>
         <div class="form-field">
           <label>Chat Room Name</label>
-          <input type="text" name="room"/>
+          <input type="text" name="room" list="room-list"/>
+          <datalist id="room-list">
+            <!--
+            <option value="LOTR" selected>by Kening</option>
+            <option value="NodeJs">by Andrew</option>
+            <option value="Tea Party">by Jean</option>
+            -->
+          </datalist>
         </div>
         <div class="form-field">
           <button>Join</button>
         </div>
       </form>
     </div>
+    <script src = "/socket.io/socket.io.js"></script>
+    <script src = "/js/libs/jquery-3.3.1.min.js"></script>
+    <script src = "/js/index.js"></script>
   </body>
 </html>
