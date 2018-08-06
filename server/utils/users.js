@@ -38,6 +38,16 @@ class Users {
     const users = this.Users.filter(user => user.room === room);
     return users.map(user => user.name);
   }
+
+  // Return whether the user is the last one in his chat room.
+  isLastUserInRoom(id) {
+    const user = this.getUser(id);
+    if (user) {
+      const userListInRoom = this.Users.filter(each => each.room === user.room);
+      return userListInRoom.length === 1;
+    }
+    return false;
+  }
 }
 
 module.exports = {

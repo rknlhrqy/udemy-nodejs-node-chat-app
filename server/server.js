@@ -20,16 +20,30 @@ const rooms = new Rooms();
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
+  debugger;
   console.log('New user connected');
 
   socket.emit('updateRoomList', rooms.getRoomList());
 
   socket.on('disconnect', () => {
+    let lastUserInRoom = false;
     console.log('Client disconnected to server');
+
+    // Check whether the user is the last on in his chat room.
+    if (users.isLastUserInRoom(socket.id)) {
+      lastUserInRoom = true;
+    }
     const user = users.removeUser(socket.id);
-    if (user) {
+    if (user && !lastUserInRoom) {
+      // If the user is not the last one in his chat room,
+      // just remove him from the chat room.
       io.to(user.room).emit('updateUserList', users.getUserList(user.room));
       io.to(user.room).emit('newMessage', generateMessage('Admin', `${user.name} has left.`));
+    } else if (user && lastUserInRoom) {
+      // If the user is the last one in his chat room,
+      // remove the chat room.
+      rooms.removeRoom(user.room);
+      io.emit('updateRoomList', rooms.getRoomList());
     }
   });
 
