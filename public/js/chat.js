@@ -81,7 +81,7 @@ socket.on('newLocationMessage', (message) => {
   });
   jQuery('#messages').append(html);
   scrollToBottom();
-})
+});
 
 jQuery('#message-form').on('submit', (event) => {
   event.preventDefault();
