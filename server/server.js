@@ -20,7 +20,6 @@ const rooms = new Rooms();
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
-  debugger;
   console.log('New user connected');
 
   socket.emit('updateRoomList', rooms.getRoomList());
