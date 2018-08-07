@@ -1,3 +1,4 @@
+require('./config/config');
 const path = require('path');
 const http = require('http');
 const express = require('express');
@@ -6,6 +7,7 @@ const { generateMessage, generateLocationMessage } = require('./utils/message');
 const { isRealString } = require('./utils/validation');
 const { Users } = require('./utils/users');
 const { Rooms } = require('./utils/rooms');
+const { Message } = require('./db/mongoose');
 
 const publicPath = path.join(__dirname, '../public');
 
@@ -68,10 +70,23 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('createMessage', (message, callback) => {
+  socket.on('createMessage', async (message, callback) => {
     const user = users.getUser(socket.id);
     if (user && isRealString(message.text)) {
       io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
+      // Save the message to Mongo DB.
+      const chatMessage = new Message({
+        userName: user.name,
+        text: message.text,
+        room: user.room,
+        createdAt: new Date().getTime(),
+      });
+      try {
+        await chatMessage.save();
+      } catch (error) {
+        console.log(`Cannot save the message to Mongo DB: ${chatMessage}`);
+        console.log(`Error: ${error}`);
+      }
     }
     callback({
       ack: true,
